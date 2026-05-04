@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyên Âm Master - Final Champion</title>
+    <style>
+        :root {
+            --primary: #00b894; /* Xanh lá sống động */
+            --primary-dark: #00947a;
+            --secondary: #6c5ce7;
+            --bg: #f0f3f7;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border: #dfe6e9;
+            --error: #d63031;
+            --success: #00b894;
+            --hint: #fdcb6e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        /* CONTAINER CHÍNH */
+        .game-card {
+            display: none; /* Hiện sau login */
+            background: var(--card-bg);
+            width: 95%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        /* LOGIN SCREEN */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+        }
+
+        .google-btn {
+            background: white; color: var(--text-main); border: 2px solid var(--border);
+            padding: 1rem 2rem; border-radius: 50px; cursor: pointer;
+            display: flex; align-items: center; gap: 12px; font-weight: 700;
+            box-shadow: 0 4px 0 var(--border); transition: 0.2s;
+        }
+        .google-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--border); }
+
+        /* SCREENS */
+        .screen { display: none; flex-direction: column; align-items: center; }
+        .active { display: flex; }
+
+        h1 { color: var(--secondary); font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
+        
+        /* NÚT CHÍNH 3D XANH LÁ */
+        .btn-main {
+            padding: 18px 55px;
+            font-size: 1.4rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            box-shadow: 0 6px 0 var(--primary-dark);
+            transition: 0.1s;
+            margin-top: 20px;
+        }
+        .btn-main:hover { background: #00c9a1; }
+        .btn-main:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--primary-dark); }
+
+        /* VÙNG ÂM THANH */
+        .audio-section {
+            margin: 25px 0;
+            background: #f8faff;
+            padding: 30px;
+            border-radius: 25px;
+            border: 2px solid #e1f0ff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-play {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: var(--secondary); border: none; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 0 #5649c0; transition: 0.1s;
+        }
+        .btn-play:active { transform: translateY(3px); box-shadow: 0 3px 0 #5649c0; }
+
+        .btn-hint {
+            margin-top: 15px; padding: 10px 25px; border-radius: 20px;
+            border: 2px solid var(--hint); background: white; color: #d35400;
+            font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+
+        /* GRID IPA */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin: 30px 0;
+            width: 100%;
+        }
+
+        .ipa-btn {
+            padding: 15px 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 0 var(--border);
+            color: var(--text-main);
+        }
+        .ipa-btn:hover:not(.correct):not(.wrong) { border-color: var(--secondary); color: var(--secondary); }
+        
+        .ipa-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); box-shadow: 0 4px 0 var(--primary-dark); transform: none !important; }
+        .ipa-btn.wrong { background: var(--error) !important; color: white; border-color: var(--error); box-shadow: 0 4px 0 #b32d2e; animation: shake 0.4s; }
+        .ipa-btn.highlight { background: var(--hint) !important; border-color: var(--hint); transform: scale(1.05); }
+
+        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+
+        /* PROGRESS BAR */
+        .progress-wrapper { width: 100%; margin-top: 10px; }
+        .progress { height: 12px; background: #eee; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; }
+        #bar { height: 100%; background: var(--secondary); width: 0%; transition: 0.4s; }
+
+        .result-gif { width: 100%; max-width: 250px; border-radius: 20px; margin: 20px 0; border: 5px solid var(--secondary); }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <h1>NGUYÊN ÂM MASTER</h1>
+    <p class="subtitle">Đăng nhập để bắt đầu thử thách</p>
+    <button id="login-btn" class="google-btn">
+        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59L2.56 13.22C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path></svg>
+        Tiếp tục với Google
+    </button>
+    <p id="login-msg" style="color: var(--error); font-weight: 700; margin-top: 15px;"></p>
+</div>
+
+<div class="game-card" id="main-game">
+    <div id="start-screen" class="screen active">
+        <h1>Phá Mã Nguyên Âm 💎</h1>
+        <p class="subtitle">Bản Champion: 20 nguyên âm - 3 chặng đường.</p>
+        <button class="btn-main" onclick="prepareGame()">BẮT ĐẦU NGAY</button>
+    </div>
+
+    <div id="round-screen" class="screen">
+        <h2 style="color: var(--success); font-size: 2.2rem;">Hoàn thành chặng!</h2>
+        <p class="subtitle">Bạn đang làm rất tốt, tiếp tục nhé!</p>
+        <button id="round-btn" class="btn-main">SANG CHẶNG MỚI</button>
+    </div>
+
+    <div id="game-content" style="display: none;">
+        <h2 id="phase-label" style="color: var(--secondary); margin: 0;">Chặng 1</h2>
+        <div style="display: flex; justify-content: space-between; font-weight: 800; color: #888; width: 100%; margin-top: 10px;">
+            <span>Câu: <span id="step">1</span>/8</span>
+            <span style="color: var(--success)">Đúng: <span id="score">0</span></span>
+        </div>
+        <div class="progress-wrapper">
+            <div class="progress"><div id="bar"></div></div>
+        </div>
+        
+        <div class="audio-section">
+            <button class="btn-play" onclick="playCurrent()">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="white"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </button>
+            <br>
+            <button class="btn-hint" onclick="showHint()">💡 Gợi Ý</button>
+        </div>
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <h1>XUẤT SẮC! 🎉</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG91OTNhZnZseXVlMWw4eGNlc3ZnMTBob3V6dDNtYnF1ZmtrcjNvcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l396FvhXOqm20Pogo/giphy.gif" class="result-gif">
+        <h2 id="final-score" style="margin: 15px 0; font-size: 2rem;"></h2>
+        <button class="btn-main" onclick="location.reload()">LÀM LẠI TỪ ĐẦU</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCdlTVHwiLOGMnrFe12DE1dQSEHZaJ594I",
+        authDomain: "nguyen-am-tieng-anh.firebaseapp.com",
+        projectId: "nguyen-am-tieng-anh"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // --- LOGIN LOGIC ---
+    document.getElementById("login-btn").onclick = async () => {
+        try {
+            const res = await signInWithPopup(auth, provider);
+            const q = query(collection(db, "Tienganh_so_cap"), where("email", "==", res.user.email));
+            const snap = await getDocs(q);
+
+            if (!snap.empty) {
+                document.getElementById("login-screen").style.display = "none";
+                document.getElementById("main-game").style.display = "block";
+            } else {
+                document.getElementById("login-msg").innerText = "Email không có quyền truy cập!";
+                await signOut(auth);
+            }
+        } catch (e) { document.getElementById("login-msg").innerText = "Lỗi đăng nhập!"; }
+    };
+
+    // --- GAME LOGIC (Nguyên âm) ---
+    // Khớp ID với file mp3 của bạn
+    const audioMap = {
+        '/ɪ/': '1a', '/i:/': '1b', '/e/': '2a', '/æ/': '2b', '/ə/': '3a', '/ɜ:/': '3b',
+        '/ʊ/': '4a', '/u:/': '4b', '/ɒ/': '5a', '/ɔ:/': '5b', '/ʌ/': '6a', '/ɑ:/': '6b',
+        '/ɪə/': '7a', '/eə/': '7b', '/ʊə/': '7c', '/aɪ/': '8a', '/eɪ/': '8b', '/ɔɪ/': '8c',
+        '/aʊ/': '9a', '/oʊ/': '9b'
+    };
+    
+    const vowels = Object.keys(audioMap);
+    let currentRound = 1, curIdx = 0, totalScore = 0;
+    let masterQuestions = [], roundQuestions = [], target = '', canClick = true;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq, type, duration) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + duration);
+    }
+
+    window.prepareGame = function() {
+        masterQuestions = [...vowels].sort(() => Math.random() - 0.5);
+        startRound(1);
+    }
+
+    function startRound(round) {
+        currentRound = round; curIdx = 0;
+        // Chặng 1&2: 8 câu, Chặng 3: 4 câu
+        let start = (round-1)*8;
+        let end = round === 3 ? vowels.length : round*8;
+        roundQuestions = masterQuestions.slice(start, end);
+        
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('game-content').style.display = 'block';
+        document.getElementById('phase-label').innerText = `Chặng ${round}`;
+        initGrid(); loadQuestion();
+    }
+
+    function initGrid() {
+        const grid = document.getElementById('grid'); grid.innerHTML = '';
+        vowels.forEach(ipa => {
+            const btn = document.createElement('button');
+            btn.className = 'ipa-btn'; btn.id = 'btn-' + audioMap[ipa];
+            btn.innerText = ipa; btn.onclick = () => check(ipa, btn);
+            grid.appendChild(btn);
+        });
+    }
+
+    function loadQuestion() {
+        let maxStep = currentRound === 3 ? 4 : 8;
+        if (curIdx >= maxStep) { handleRoundEnd(); return; }
+        target = roundQuestions[curIdx];
+        document.getElementById('step').innerText = curIdx + 1;
+        document.getElementById('bar').style.width = (curIdx / maxStep * 100) + '%';
+        document.querySelectorAll('.ipa-btn').forEach(b => { if(!b.classList.contains('correct')) b.className = 'ipa-btn'; });
+        canClick = true;
+        setTimeout(playCurrent, 600);
+    }
+
+    window.playCurrent = function() {
+        new Audio(audioMap[target] + ".mp3").play().catch(() => {
+            const utter = new SpeechSynthesisUtterance(target);
+            utter.lang = 'en-US'; window.speechSynthesis.speak(utter);
+        });
+    }
+
+    function check(ipa, btn) {
+        if (!canClick) return;
+        if (ipa === target) {
+            canClick = false; totalScore++;
+            document.getElementById('score').innerText = totalScore;
+            btn.classList.add('correct');
+            beep(880, 'sine', 0.2);
+            setTimeout(() => { curIdx++; loadQuestion(); }, 1000);
+        } else {
+            btn.classList.add('wrong');
+            beep(220, 'square', 0.15);
+            setTimeout(() => btn.classList.remove('wrong'), 500);
+        }
+    }
+
+    function handleRoundEnd() {
+        document.getElementById('game-content').style.display = 'none';
+        if (currentRound < 3) {
+            document.getElementById('round-screen').classList.add('active');
+            document.getElementById('round-btn').onclick = () => startRound(currentRound + 1);
+        } else {
+            document.getElementById('result-screen').classList.add('active');
+            document.getElementById('final-score').innerText = `Kết quả: ${totalScore} / 20`;
+            new Audio("chúc mừng.mp3").play().catch(()=>{});
+        }
+    }
+
+    window.showHint = function() {
+        const correctBtn = document.getElementById('btn-' + audioMap[target]);
+        correctBtn.classList.add('highlight');
+        setTimeout(() => correctBtn.classList.remove('highlight'), 1200);
+    }
+</script>
+</body>
+</html>
