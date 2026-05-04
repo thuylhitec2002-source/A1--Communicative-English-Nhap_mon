@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Phát Âm Phụ Âm</title>
+    <style>
+        :root {
+            --primary: #00cec9;
+            --secondary: #6c5ce7;
+            --success: #2ecc71;
+            --bg: #f0f3f7;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text);
+        }
+
+        .box {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 35rem;
+            text-align: center;
+            position: relative;
+            border: 1px solid #e1e8ed;
+        }
+
+        h2 { color: var(--secondary); font-size: 2rem; margin-bottom: 1.5rem; }
+        p { font-size: 1.2rem; color: #636e72; }
+
+        /* MENU CHÍNH */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .menu-btn {
+            background: white;
+            color: var(--text);
+            border: 2px solid #dfe6e9;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            font-size: 1.4rem; /* Chữ to hơn */
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .menu-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,206,201,0.2);
+            color: var(--primary);
+        }
+
+        /* TRANG LUYỆN TẬP */
+        #main-content { display: none; width: 100%; }
+        
+        .row { display: grid; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .col-2 { grid-template-columns: 1fr 1fr; }
+        .col-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        .btn {
+            position: relative;
+            padding: 2rem 1rem;
+            border: 3px solid #dfe6e9;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 2.5rem; /* Ký tự IPA cực to */
+            background: white;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            min-height: 140px;
+            box-shadow: 0 6px 0 #dfe6e9;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 11px 0 #dfe6e9;
+            border-color: var(--secondary);
+            background: #f8faff;
+        }
+
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #dfe6e9; }
+
+        /* NÚT ĐĂNG NHẬP */
+        .google-btn {
+            background: white; border: 2px solid #dfe6e9; padding: 1.2rem 2.5rem;
+            border-radius: 4rem; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; gap: 15px; font-weight: bold; font-size: 1.2rem;
+            width: 100%; transition: 0.3s;
+        }
+        .google-btn:hover { border-color: var(--secondary); background: #f9f9f9; }
+
+        /* NÚT ĐIỀU HƯỚNG */
+        .home-btn {
+            position: absolute; top: 25px; left: 25px;
+            background: #f1f5f9; border: none; font-size: 1.8rem;
+            width: 50px; height: 50px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .home-btn:hover { background: #e2e8f0; transform: scale(1.1); }
+
+        .btn-logout { margin-top: 2rem; background: none; border: none; color: #b2bec3; cursor: pointer; text-decoration: underline; font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <button id="back-to-home" class="home-btn" onclick="goHome()" style="display: none;">🏠</button>
+
+    <!-- 1. ĐĂNG NHẬP -->
+    <div id="login-screen">
+        <h2>Đăng Nhập</h2>
+        <button id="login-btn" class="google-btn">
+            <svg width="24" height="24" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59L2.56 13.22C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path></svg>
+            Tiếp tục với Google
+        </button>
+        <p id="login-msg" style="color: var(--error);"></p>
+    </div>
+
+    <!-- 2. TRANG CHỦ -->
+    <div id="home-screen" style="display: none;">
+        <h2>Luyện Tập Phụ Âm</h2>
+        <p>Chọn cặp âm để nghe phát âm chuẩn</p>
+        <div id="menu-grid" class="menu-grid"></div>
+        <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+    </div>
+
+    <!-- 3. TRANG THÀNH PHẦN (CHỈ LUYỆN NGHE) -->
+    <div id="main-content">
+        <h2 id="lesson-title">Cặp âm</h2>
+        <p style="margin-bottom: 2rem;">Bấm vào biểu tượng hoặc ký tự để nghe</p>
+        
+        <div id="practice-area">
+            <div id="audio-row" class="row"></div>
+            <div id="text-row" class="row"></div>
+        </div>
+
+        <button class="menu-btn" onclick="goHome()" style="margin-top: 2rem; width: 100%; background: var(--secondary); color: white; border: none;">Xong bài tập</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCdlTVHwiLOGMnrFe12DE1dQSEHZaJ594I",
+        authDomain: "nguyen-am-tieng-anh.firebaseapp.com",
+        projectId: "nguyen-am-tieng-anh",
+        storageBucket: "nguyen-am-tieng-anh.firebasestorage.app",
+        messagingSenderId: "878440633705",
+        appId: "1:878440633705:web:755de6cb273eb139ebd9f8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    window.data = [
+        { label: "p & b", pair: [{id: 'p', t: '/p/'}, {id: 'b', t: '/b/'}] },
+        { label: "t & d", pair: [{id: 't', t: '/t/'}, {id: 'd', t: '/d/'}] },
+        { label: "k & g", pair: [{id: 'k', t: '/k/'}, {id: 'g', t: '/g/'}] },
+        { label: "f & v", pair: [{id: 'f', t: '/f/'}, {id: 'v', t: '/v/'}] },
+        { label: "θ & ð", pair: [{id: 'th1', t: '/θ/'}, {id: 'th2', t: '/ð/'}] },
+        { label: "s & z", pair: [{id: 's', t: '/s/'}, {id: 'z', t: '/z/'}] },
+        { label: "ʃ & ʒ", pair: [{id: 'sh', t: '/ʃ/'}, {id: 'ge', t: '/ʒ/'}] },
+        { label: "tʃ & dʒ", pair: [{id: 'ch', t: '/tʃ/'}, {id: 'j', t: '/dʒ/'}] },
+        { label: "m - n - ŋ", pair: [{id: 'm', t: '/m/'}, {id: 'n', t: '/n/'}, {id: 'ng', t: '/ŋ/'}] },
+        { label: "l & r", pair: [{id: 'l', t: '/l/'}, {id: 'r', t: '/r/'}] },
+        { label: "w & j", pair: [{id: 'w', t: '/w/'}, {id: 'y', t: '/j/'}] },
+        { label: "h", pair: [{id: 'h', t: '/h/'}] }
+    ];
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const q = query(collection(db, "Tienganh_so_cap"), where("email", "==", user.email));
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+                document.getElementById("login-screen").style.display = "none";
+                showHomeScreen();
+            } else {
+                document.getElementById("login-msg").innerText = "Email không có quyền.";
+                await signOut(auth);
+            }
+        }
+    });
+
+    document.getElementById("login-btn").onclick = () => signInWithPopup(auth, provider);
+    window.logout = () => signOut(auth).then(() => location.reload());
+
+    function showHomeScreen() {
+        document.getElementById("home-screen").style.display = "flex";
+        document.getElementById("main-content").style.display = "none";
+        document.getElementById("back-to-home").style.display = "none";
+        const grid = document.getElementById("menu-grid");
+        grid.innerHTML = '';
+        window.data.forEach((item, index) => {
+            const btn = document.createElement("button");
+            btn.className = "menu-btn";
+            btn.innerText = item.label;
+            btn.onclick = () => startLesson(index);
+            grid.appendChild(btn);
+        });
+    }
+
+    window.goHome = () => showHomeScreen();
+
+    function startLesson(idx) {
+        const lesson = window.data[idx];
+        document.getElementById("home-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("back-to-home").style.display = "flex";
+        document.getElementById("lesson-title").innerText = "Luyện tập: " + lesson.label;
+
+        const ar = document.getElementById("audio-row");
+        const tr = document.getElementById("text-row");
+        ar.className = tr.className = `row col-${lesson.pair.length}`;
+        ar.innerHTML = ''; tr.innerHTML = '';
+
+        lesson.pair.forEach((item) => {
+            // Hàng Loa
+            const aBtn = document.createElement("div");
+            aBtn.className = "btn";
+            aBtn.innerHTML = '<svg width="50" height="50" viewBox="0 0 24 24" fill="currentColor"><path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z" /></svg>';
+            aBtn.onclick = () => new Audio(`${item.id}.mp3`).play();
+            ar.appendChild(aBtn);
+
+            // Hàng Chữ (IPA)
+            const tBtn = document.createElement("div");
+            tBtn.className = "btn";
+            tBtn.innerText = item.t;
+            tBtn.onclick = () => new Audio(`${item.id}.mp3`).play();
+            tr.appendChild(tBtn);
+        });
+    }
+</script>
+</body>
+</html>
