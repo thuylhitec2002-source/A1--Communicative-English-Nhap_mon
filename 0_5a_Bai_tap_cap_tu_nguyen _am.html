@@ -3,134 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vowel Minimal Pairs - Professional Edition</title>
+    <title>Vowel Minimal Pairs Mastery</title>
     <style>
         :root {
-            --primary: #6c5ce7;
-            --primary-light: #f3f0ff;
-            --success: #2ecc71;
-            --error: #ff7675;
+            --primary: #00b894;
+            --primary-dark: #00947a;
+            --secondary: #6c5ce7;
             --bg: #f0f3f7;
             --card-bg: #ffffff;
-            --text: #2d3436;
-            --sub-text: #636e72;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border: #dfe6e9;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: var(--text); }
-        .box { background: var(--card-bg); padding: 2.5rem; border-radius: 2.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.1); width: 100%; max-width: 38rem; text-align: center; position: relative; }
-
-        h2.main-title { color: var(--primary); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 0.5rem; line-height: 1.2; }
-        #login-screen { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-        
-        .google-btn {
-            background: white; color: #2d3436; border: 1px solid #dfe6e9; padding: 0.8rem 1.8rem; border-radius: 50px; 
-            cursor: pointer; display: flex; align-items: center; gap: 12px; font-weight: bold;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05); transition: 0.3s; font-size: 1rem;
-        }
-        .google-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); border-color: var(--primary); }
-        .google-icon { width: 20px; height: 20px; }
-
-        #main-content { display: none; }
-        .progress-container { width: 100%; height: 10px; background: #eee; border-radius: 5px; margin: 1.5rem 0; overflow: hidden; }
-        #progress-bar { height: 100%; background: var(--primary); width: 11.11%; transition: 0.4s; }
-
-        .row { display: grid; gap: 1.2rem; margin-bottom: 1.5rem; }
-        .col-2 { grid-template-columns: 1fr 1fr; }
-        .col-3 { grid-template-columns: 1fr 1fr 1fr; }
-
-        .btn {
-            position: relative; padding: 1rem 0.5rem; border: 2px solid #dfe6e9; border-radius: 1.2rem;
-            cursor: pointer; background: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            font-weight: bold; box-shadow: 0 6px 0 #dfe6e9; outline: none; min-height: 105px;
-        }
-        .btn .spelling { font-size: 1.4rem; }
-        .btn .ipa { font-size: 1rem; color: var(--sub-text); font-weight: normal; margin-top: 4px; }
-        .btn-num {
-            position: absolute; top: -8px; left: -8px; background: #2d3436; color: #ffffff;
-            font-size: 0.8rem; width: 26px; height: 26px; display: flex; justify-content: center;
-            align-items: center; border-radius: 50%; border: 2px solid white; z-index: 5;
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
         }
 
-        .btn:hover:not(.matched) { transform: translateY(-7px); box-shadow: 0 13px 0 #dfe6e9; border-color: var(--primary); }
-        .selected { border-color: var(--primary) !important; background: var(--primary-light) !important; box-shadow: 0 6px 0 var(--primary) !important; transform: scale(1.05); }
-        
-        .matched { color: white !important; transform: none !important; cursor: default; }
-        .matched .ipa { color: white !important; opacity: 0.8; }
-        .match-0 { background: var(--success) !important; border-color: var(--success) !important; box-shadow: 0 4px 0 #27ae60 !important; }
-        .match-1 { background: #9b59b6 !important; border-color: #9b59b6 !important; box-shadow: 0 4px 0 #8e44ad !important; }
-        .match-2 { background: #e67e22 !important; border-color: #e67e22 !important; box-shadow: 0 4px 0 #d35400 !important; }
+        .app-container {
+            background: var(--card-bg);
+            width: 95%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
 
-        .shake { animation: shake 0.4s; }
-        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-6px);} 75% {transform: translateX(6px);} }
+        h1 { color: var(--secondary); font-size: 2.2rem; margin: 0 0 10px; font-weight: 800; }
+        .subtitle { color: var(--text-sub); font-size: 1.1rem; margin-bottom: 35px; display: block; font-weight: 500; }
 
-        .nav-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; }
-        .nav-btn { background: #2d3436; color: white; padding: 1rem; border: none; border-radius: 15px; cursor: pointer; flex: 1; font-weight: bold; box-shadow: 0 5px 0 #000; transition: 0.2s; }
-        .nav-btn:disabled { opacity: 0.2; cursor: not-allowed; box-shadow: none; }
-        
-        #ans-toggle-btn { width: 100%; border: none; background: #f1f5f9; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: bold; color: #64748b; margin-top: 10px; }
-        #finish-ui { display: none; }
-        .score-box { background: var(--primary-light); color: var(--primary); padding: 1rem; border-radius: 15px; font-size: 1.2rem; font-weight: 800; margin: 15px 0; border: 2px dashed var(--primary); }
-        .btn-restart { background: var(--success); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 1rem; box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); transition: 0.3s; }
-        .btn-restart:hover { transform: scale(1.05); background: #27ae60; }
+        /* Menu Grid 3D Xanh lá */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .menu-item {
+            background: var(--primary);
+            border: none;
+            padding: 20px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 0 var(--primary-dark);
+            transition: all 0.1s ease;
+        }
+
+        .menu-item:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--primary-dark); background: #00c9a1; }
+        .menu-item:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--primary-dark); }
+
+        /* Sound Card: Tích hợp Loa + Từ + IPA */
+        .sound-grid {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        .sound-card {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            padding: 30px 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 0 var(--border);
+        }
+
+        .sound-card:hover { border-color: var(--secondary); transform: translateY(-4px); box-shadow: 0 12px 0 var(--border); }
+        .sound-card:active { transform: translateY(4px); box-shadow: 0 4px 0 var(--border); }
+
+        .word-text { font-size: 2.2rem; font-weight: 700; margin: 5px 0 0 0; color: var(--text-main); }
+        .ipa-text { font-size: 1.1rem; color: var(--secondary); font-weight: 600; margin: 0; }
+
+        /* Điều hướng */
+        .action-btn {
+            width: 100%; padding: 18px; background: var(--secondary); color: white; border: none;
+            border-radius: 50px; font-size: 1.2rem; font-weight: 700; margin-top: 35px; cursor: pointer;
+            box-shadow: 0 6px 0 #5649c0;
+        }
+
+        .home-icon-btn {
+            position: absolute; top: 25px; left: 25px; background: #dfe6e9; border: none;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        .logout-btn { margin-top: 30px; background: #fab1a0; color: #d63031; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; }
+
+        /* Auth */
+        #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .google-auth-btn { width: 80%; max-width: 300px; padding: 15px; border-radius: 50px; border: 2px solid var(--border); background: white; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <div id="login-screen">
-        <h2 class="main-title">THỬ THÁCH TỪ VỰNG<br>CẶP NGUYÊN ÂM</h2>
-        <button id="login-btn" class="google-btn">
-            <svg class="google-icon" viewBox="0 0 48 48">
-                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-            </svg>
-            Tiếp tục với Google
-        </button>
-        <p id="login-msg" style="color: var(--error); font-weight: bold;"></p>
+<div id="login-screen">
+    <h1>VOWEL PAIRS</h1>
+    <button id="login-trigger" class="google-auth-btn">Tiếp tục với Google</button>
+    <p id="auth-err" style="color: red; margin-top: 15px; font-weight: bold;"></p>
+</div>
+
+<div class="app-container" id="main-game" style="display: none;">
+    <button id="back-nav" class="home-icon-btn" onclick="goHome()" style="display: none;">🏠</button>
+
+    <div id="home-section">
+        <h1>MINIMAL PAIRS</h1>
+        <span class="subtitle">Phân biệt nguyên âm qua cặp từ</span>
+        <div id="lesson-menu" class="menu-grid"></div>
+        <button class="logout-btn" onclick="logout()">ĐĂNG XUẤT</button>
     </div>
 
-    <div id="main-content">
-        <h3 id="title" style="margin: 0; font-size: 1.1rem; color: var(--primary);">Luyện tập (1/9)</h3>
-        <div class="progress-container"><div id="progress-bar"></div></div>
-        
-        <div id="game-ui">
-            <div id="audio-row" class="row"></div>
-            <div id="text-row" class="row"></div>
-            <button id="ans-toggle-btn" onclick="toggleAnswer()">Hiện đáp án</button>
-        </div>
-
-        <div id="finish-ui">
-            <h2 style="color: var(--success); margin: 0;">HOÀN THÀNH XUẤT SẮC! 🎉</h2>
-            <div class="score-box" id="final-score"></div>
-            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMG91OTNhZnZseXVlMWw4eGNlc3ZnMTBob3V6dDNtYnF1ZmtrcjNvcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MhHXeM4SpKrpC/giphy.gif" style="width: 100%; max-width: 250px; border-radius: 1.5rem; border: 5px solid var(--primary); margin-bottom: 10px;">
-            <br>
-            <button class="btn-restart" onclick="restartGame()">LÀM LẠI THỬ THÁCH</button>
-        </div>
-
-        <div class="nav-container">
-            <button class="nav-btn" id="prev" onclick="changePage(-1)">← Trước</button>
-            <button class="nav-btn" id="next" onclick="changePage(1)">Sau →</button>
-        </div>
+    <div id="practice-section" style="display: none;">
+        <h1 id="lesson-header" style="font-size: 1.8rem;">LUYỆN TẬP</h1>
+        <span class="subtitle">Chạm vào thẻ để nghe phát âm từ</span>
+        <div id="sound-display" class="sound-grid"></div>
+        <button class="action-btn" onclick="goHome()">XONG BÀI TẬP</button>
     </div>
 </div>
 
-<audio id="snd-win" src="https://tiengdong.com/wp-content/uploads/Am-thanh-chuc-mung-chien-thang-www_tiengdong_com.mp3?_=1"></audio>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
     import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCdlTVHwiLOGMnrFe12DE1dQSEHZaJ594I",
         authDomain: "nguyen-am-tieng-anh.firebaseapp.com",
-        projectId: "nguyen-am-tieng-anh",
-        storageBucket: "nguyen-am-tieng-anh.firebasestorage.app",
-        messagingSenderId: "878440633705",
-        appId: "1:878440633705:web:755de6cb273eb139ebd9f8"
+        projectId: "nguyen-am-tieng-anh"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -138,128 +159,85 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    let audioCtx;
-    function playBeep(type) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator(); 
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(type === 'correct' ? 880 : 150, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-    }
-
-    // Dữ liệu Nguyên âm: 9 trang theo đúng danh sách âm của bạn
-    window.data = [
-        { title: "/ɪ/ vs /i:/", pair: [{id: '1a', t: 'Ship', p: '/ʃɪp/'}, {id: '1b', t: 'Sheep', p: '/ʃiːp/'}] },
-        { title: "/e/ vs /æ/", pair: [{id: '2a', t: 'Pen', p: '/pen/'}, {id: '2b', t: 'Pan', p: '/pæn/'}] },
-        { title: "/ə/ vs /ɜ:/", pair: [{id: '3a', t: 'Ago', p: '/əˈɡəʊ/'}, {id: '3b', t: 'Bird', p: '/bɜːrd/'}] },
-        { title: "/ʊ/ vs /u:/", pair: [{id: '4a', t: 'Foot', p: '/fʊt/'}, {id: '4b', t: 'Food', p: '/fuːt/'}] },
-        { title: "/ɒ/ vs /ɔ:/", pair: [{id: '5a', t: 'Pot', p: '/pɒt/'}, {id: '5b', t: 'Port', p: '/pɔːt/'}] },
-        { title: "/ʌ/ vs /ɑ:/", pair: [{id: '6a', t: 'Cup', p: '/kʌp/'}, {id: '6b', t: 'Carp', p: '/kɑːp/'}] },
-        { title: "Diphthongs Set 1", pair: [{id: '7a', t: 'Near', p: '/nɪə(r)/'}, {id: '7b', t: 'Hair', p: '/heə(r)/'}, {id: '7c', t: 'Pure', p: '/pjʊə(r)/'}] },
-        { title: "Diphthongs Set 2", pair: [{id: '8a', t: 'My', p: '/maɪ/'}, {id: '8b', t: 'May', p: '/meɪ/'}, {id: '8c', t: 'Boy', p: '/bɔɪ/'}] },
-        { title: "/aʊ/ vs /oʊ/", pair: [{id: '9a', t: 'Cow', p: '/kaʊ/'}, {id: '9b', t: 'Go', p: '/ɡəʊ/'}] }
+    // Dữ liệu Cặp từ tối thiểu (Minimal Pairs)
+    // Audio sẽ gọi theo tên từ: ship.mp3, sheep.mp3...
+    window.lessonData = [
+        { name: "/ɪ/ vs /i:/", items: [{id: 'ship', sym: '/ʃɪp/'}, {id: 'sheep', sym: '/ʃiːp/'}] },
+        { name: "/e/ vs /æ/", items: [{id: 'pen', sym: '/pen/'}, {id: 'pan', sym: '/pæn/'}] },
+        { name: "/ə/ vs /ɜ:/", items: [{id: 'ago', sym: '/əˈɡəʊ/'}, {id: 'bird', sym: '/bɜːrd/'}] },
+        { name: "/ʊ/ vs /u:/", items: [{id: 'foot', sym: '/fʊt/'}, {id: 'food', sym: '/fuːt/'}] },
+        { name: "/ɒ/ vs /ɔ:/", items: [{id: 'pot', sym: '/pɒt/'}, {id: 'port', sym: '/pɔːt/'}] },
+        { name: "/ʌ/ vs /ɑ:/", items: [{id: 'cup', sym: '/kʌp/'}, {id: 'carp', sym: '/kɑːp/'}] },
+        { name: "Nhóm /ɪə - eə - ʊə/", items: [{id: 'near', sym: '/nɪə/'}, {id: 'hair', sym: '/heə/'}, {id: 'pure', sym: '/pjʊə/'}] },
+        { name: "Nhóm /aɪ - eɪ - ɔɪ/", items: [{id: 'my', sym: '/maɪ/'}, {id: 'may', sym: '/meɪ/'}, {id: 'boy', sym: '/ɔɪ/'}] },
+        { name: "/aʊ/ vs /oʊ/", items: [{id: 'cow', sym: '/kaʊ/'}, {id: 'go', sym: '/ɡəʊ/'}] }
     ];
 
-    let cur = 0, sel = null, completed = [], showingAns = false, cachedOrder = { audio: [], text: [] };
-    let firstTryCount = 0; 
-    let currentErrors = []; 
-    let totalQuestionsCount = 20; // 7 cặp x 2 + 2 nhóm x 3 = 20 âm
-
-    window.init = function() {
-        const gameUi = document.getElementById('game-ui'), finishUi = document.getElementById('finish-ui'),
-              prog = document.getElementById('progress-bar'), title = document.getElementById('title');
-        
-        if (cur >= window.data.length) {
-            gameUi.style.display = 'none'; finishUi.style.display = 'block';
-            title.innerText = "KẾT THÚC THỬ THÁCH"; prog.style.width = '100%';
-            document.getElementById('final-score').innerText = `BẠN ĐÃ CHỌN ĐÚNG ${firstTryCount}/${totalQuestionsCount} ÂM Ở LẦN ĐẦU TIÊN!`;
-            document.getElementById('snd-win').play().catch(()=>{});
-            document.getElementById('next').style.visibility = 'hidden';
-            return;
-        }
-
-        gameUi.style.display = 'block'; finishUi.style.display = 'none';
-        title.innerText = `LUYỆN TẬP: ${window.data[cur].title} (${cur + 1}/9)`;
-        prog.style.width = ((cur + 1) / 9 * 100) + '%';
-        document.getElementById('prev').disabled = (cur === 0);
-        document.getElementById('next').style.visibility = 'visible';
-
-        const ar = document.getElementById('audio-row'), tr = document.getElementById('text-row');
-        const p = window.data[cur].pair;
-        ar.className = tr.className = `row ${p.length === 3 ? 'col-3' : 'col-2'}`;
-
-        if (!cachedOrder.audio.length) {
-            cachedOrder.audio = p.map((_, i) => i).sort(() => Math.random() - 0.5);
-            cachedOrder.text = p.map((_, i) => i).sort(() => Math.random() - 0.5);
-        }
-
-        let textDisplayOrder = showingAns ? [...cachedOrder.audio] : [...cachedOrder.text];
-        ar.innerHTML = ''; tr.innerHTML = '';
-
-        cachedOrder.audio.forEach((origIdx, dispIdx) => {
-            const item = p[origIdx]; const isMatched = completed.includes(item.id) || showingAns;
-            const btn = document.createElement('div');
-            btn.className = `btn${isMatched ? ' matched match-'+origIdx : ''}${sel === item.id ? ' selected' : ''}`;
-            btn.innerHTML = `<span class="btn-num">${dispIdx + 1}</span><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z" /></svg>`;
-            btn.onclick = () => { 
-                new Audio(`${item.id}.mp3`).play().catch(()=>{}); 
-                if (!isMatched) { sel = item.id; window.init(); }
-            };
-            ar.appendChild(btn);
-        });
-
-        textDisplayOrder.forEach((origIdx) => {
-            const item = p[origIdx]; const isMatched = completed.includes(item.id) || showingAns;
-            const btn = document.createElement('div');
-            btn.className = `btn${isMatched ? ' matched match-'+origIdx : ''}`;
-            btn.innerHTML = `<span class="spelling">${item.t}</span><span class="ipa">${item.p}</span>`;
-            btn.onclick = () => {
-                if (isMatched) return;
-                if (sel === item.id) { 
-                    if (!currentErrors.includes(item.id)) firstTryCount++;
-                    completed.push(item.id); playBeep('correct'); sel = null; window.init(); 
-                } else if (sel) { 
-                    if (!currentErrors.includes(sel)) currentErrors.push(sel);
-                    btn.classList.add('shake'); setTimeout(()=>btn.classList.remove('shake'), 400); playBeep('wrong'); 
-                }
-            };
-            tr.appendChild(btn);
-        });
-    };
-
-    window.toggleAnswer = () => { showingAns = !showingAns; window.init(); };
-    window.changePage = (s) => { 
-        cur = Math.max(0, Math.min(window.data.length, cur + s)); 
-        completed = []; sel = null; showingAns = false; cachedOrder = { audio: [], text: [] }; 
-        currentErrors = []; 
-        window.init(); 
-    };
-    
-    window.restartGame = () => { 
-        cur = 0; completed = []; sel = null; showingAns = false; firstTryCount = 0; currentErrors = []; cachedOrder = { audio: [], text: [] }; 
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("finish-ui").style.display = "none";
-        window.init(); 
-    };
-
-    document.getElementById("login-btn").onclick = async () => {
-        try {
-            const res = await signInWithPopup(auth, provider);
-            const q = query(collection(db, "Tienganh_so_cap"), where("email", "==", res.user.email));
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const q = query(collection(db, "Tienganh_so_cap"), where("email", "==", user.email));
             const snap = await getDocs(q);
             if (!snap.empty) {
                 document.getElementById("login-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
-                window.init();
+                document.getElementById("main-game").style.display = "block";
+                loadDashboard();
             } else {
-                document.getElementById("login-msg").innerText = "Email không có quyền.";
+                document.getElementById("auth-err").innerText = "Email không được phép.";
                 await signOut(auth);
             }
-        } catch (e) { document.getElementById("login-msg").innerText = "Lỗi đăng nhập."; }
-    };
+        } else {
+            document.getElementById("login-screen").style.display = "flex";
+            document.getElementById("main-game").style.display = "none";
+        }
+    });
+
+    document.getElementById("login-trigger").onclick = () => signInWithPopup(auth, provider);
+    window.logout = () => signOut(auth).then(() => location.reload());
+
+    function loadDashboard() {
+        document.getElementById("home-section").style.display = "block";
+        document.getElementById("practice-section").style.display = "none";
+        document.getElementById("back-nav").style.display = "none";
+        const grid = document.getElementById("lesson-menu");
+        grid.innerHTML = '';
+        window.lessonData.forEach((lesson, index) => {
+            const btn = document.createElement("div");
+            btn.className = "menu-item";
+            btn.innerText = lesson.name;
+            btn.onclick = () => openLesson(index);
+            grid.appendChild(btn);
+        });
+    }
+
+    window.goHome = () => loadDashboard();
+
+    function openLesson(idx) {
+        const lesson = window.lessonData[idx];
+        document.getElementById("home-section").style.display = "none";
+        document.getElementById("practice-section").style.display = "block";
+        document.getElementById("back-nav").style.display = "flex";
+        document.getElementById("lesson-header").innerText = lesson.name;
+
+        const grid = document.getElementById("sound-display");
+        grid.className = `sound-grid grid-${lesson.items.length}`;
+        grid.innerHTML = '';
+
+        lesson.items.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "sound-card";
+            // Chữ cái đầu viết hoa cho từ
+            const capitalizedWord = item.id.charAt(0).toUpperCase() + item.id.slice(1);
+            card.innerHTML = `
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="#6c5ce7">
+                    <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+                </svg>
+                <p class="word-text">${capitalizedWord}</p>
+                <p class="ipa-text">${item.sym}</p>
+            `;
+            card.onclick = () => new Audio(`${item.id}.mp3`).play();
+            grid.appendChild(card);
+        });
+    }
 </script>
 </body>
 </html>
