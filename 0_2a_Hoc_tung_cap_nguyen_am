@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Vowels Mastery</title>
+    <style>
+        :root {
+            --primary: #00b894; /* Xanh lá sống động */
+            --primary-dark: #00947a;
+            --secondary: #6c5ce7;
+            --bg: #f0f3f7;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border: #dfe6e9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        .app-container {
+            background: var(--card-bg);
+            width: 95%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 { color: var(--secondary); font-size: 2.2rem; margin: 0 0 10px; font-weight: 800; }
+        .subtitle { color: var(--text-sub); font-size: 1.1rem; margin-bottom: 35px; display: block; font-weight: 500; }
+
+        /* Dashboard Menu với nút 3D xanh lá */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .menu-item {
+            background: var(--primary);
+            border: none;
+            padding: 20px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 0 var(--primary-dark);
+            transition: all 0.1s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 var(--primary-dark);
+            background: #00c9a1;
+        }
+
+        .menu-item:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--primary-dark);
+        }
+
+        /* Thẻ luyện tập tích hợp IPA & LOA */
+        .sound-grid {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        .sound-card {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            padding: 40px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 8px 0 var(--border);
+        }
+
+        .sound-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 0 var(--border);
+        }
+
+        .sound-card:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 var(--border);
+        }
+
+        .ipa-symbol {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        /* Nút chức năng */
+        .action-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 35px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #5649c0;
+            transition: all 0.1s;
+        }
+
+        .action-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #5649c0;
+        }
+
+        .home-icon-btn {
+            position: absolute; top: 25px; left: 25px;
+            background: #dfe6e9; border: none; font-size: 1.4rem;
+            width: 45px; height: 45px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        .logout-btn {
+            margin-top: 30px;
+            background: #fab1a0;
+            color: #d63031;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover { background: #ff7675; color: white; }
+
+        /* Auth UI */
+        .google-auth-btn {
+            width: 100%; padding: 18px; border-radius: 50px;
+            border: 2px solid var(--border); background: white;
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 4px 0 var(--border);
+        }
+        
+        .google-auth-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--border); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <button id="back-nav" class="home-icon-btn" onclick="goHome()" style="display: none;">🏠</button>
+
+    <!-- TRANG ĐĂNG NHẬP -->
+    <div id="auth-section">
+        <h1>XIN CHÀO</h1>
+        <span class="subtitle">Đăng nhập để luyện tập Nguyên âm</span>
+        <button id="login-trigger" class="google-auth-btn">
+            <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59L2.56 13.22C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path></svg>
+            TIẾP TỤC VỚI GOOGLE
+        </button>
+        <p id="auth-err" style="color: #d63031; margin-top: 15px; font-weight: bold;"></p>
+    </div>
+
+    <!-- TRANG CHỦ -->
+    <div id="home-section" style="display: none;">
+        <h1>LUYỆN NGUYÊN ÂM</h1>
+        <span class="subtitle">Chọn một nhóm âm để bắt đầu</span>
+        <div id="lesson-menu" class="menu-grid"></div>
+        <button class="logout-btn" onclick="logout()">ĐĂNG XUẤT</button>
+    </div>
+
+    <!-- TRANG BÀI HỌC -->
+    <div id="practice-section" style="display: none;">
+        <h1 id="lesson-header" style="font-size: 1.8rem; margin-bottom: 5px;">LUYỆN TẬP</h1>
+        <span class="subtitle">Bấm vào thẻ để nghe phát âm mẫu</span>
+        
+        <div id="sound-display" class="sound-grid"></div>
+
+        <button class="action-btn" onclick="goHome()">XONG BÀI TẬP</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCdlTVHwiLOGMnrFe12DE1dQSEHZaJ594I",
+        authDomain: "nguyen-am-tieng-anh.firebaseapp.com",
+        projectId: "nguyen-am-tieng-anh"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // Dữ liệu Nguyên âm từ file bạn gửi
+    window.lessonData = [
+        { name: "/ɪ/ & /i:/", items: [{id: '1a', sym: '/ɪ/'}, {id: '1b', sym: '/i:/'}] },
+        { name: "/e/ & /æ/", items: [{id: '2a', sym: '/e/'}, {id: '2b', sym: '/æ/'}] },
+        { name: "/ə/ & /ɜ:/", items: [{id: '3a', sym: '/ə/'}, {id: '3b', sym: '/ɜ:/'}] },
+        { name: "/ʊ/ & /u:/", items: [{id: '4a', sym: '/ʊ/'}, {id: '4b', sym: '/u:/'}] },
+        { name: "/ɒ/ & /ɔ:/", items: [{id: '5a', sym: '/ɒ/'}, {id: '5b', sym: '/ɔ:/'}] },
+        { name: "/ʌ/ & /ɑ:/", items: [{id: '6a', sym: '/ʌ/'}, {id: '6b', sym: '/ɑ:/'}] },
+        { name: "Diphthongs 1", items: [{id: '7a', sym: '/ɪə/'}, {id: '7b', sym: '/eə/'}, {id: '7c', sym: '/ʊə/'}] },
+        { name: "Diphthongs 2", items: [{id: '8a', sym: '/aɪ/'}, {id: '8b', sym: '/eɪ/'}, {id: '8c', sym: '/ɔɪ/'}] },
+        { name: "/aʊ/ & /oʊ/", items: [{id: '9a', sym: '/aʊ/'}, {id: '9b', sym: '/oʊ/'}] }
+    ];
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const q = query(collection(db, "Tienganh_so_cap"), where("email", "==", user.email));
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+                document.getElementById("auth-section").style.display = "none";
+                loadDashboard();
+            } else {
+                document.getElementById("auth-err").innerText = "Email chưa được cấp quyền.";
+                await signOut(auth);
+            }
+        } else {
+            document.getElementById("auth-section").style.display = "block";
+            document.getElementById("home-section").style.display = "none";
+            document.getElementById("practice-section").style.display = "none";
+            document.getElementById("back-nav").style.display = "none";
+        }
+    });
+
+    document.getElementById("login-trigger").onclick = () => signInWithPopup(auth, provider);
+    window.logout = () => signOut(auth).then(() => location.reload());
+
+    function loadDashboard() {
+        document.getElementById("home-section").style.display = "block";
+        document.getElementById("practice-section").style.display = "none";
+        document.getElementById("back-nav").style.display = "none";
+        const grid = document.getElementById("lesson-menu");
+        grid.innerHTML = '';
+        window.lessonData.forEach((lesson, index) => {
+            const btn = document.createElement("div");
+            btn.className = "menu-item";
+            btn.innerText = lesson.name;
+            btn.onclick = () => openLesson(index);
+            grid.appendChild(btn);
+        });
+    }
+
+    window.goHome = () => loadDashboard();
+
+    function openLesson(idx) {
+        const lesson = window.lessonData[idx];
+        document.getElementById("home-section").style.display = "none";
+        document.getElementById("practice-section").style.display = "block";
+        document.getElementById("back-nav").style.display = "flex";
+        document.getElementById("lesson-header").innerText = lesson.name;
+
+        const grid = document.getElementById("sound-display");
+        grid.className = `sound-grid grid-${lesson.items.length}`;
+        grid.innerHTML = '';
+
+        lesson.items.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "sound-card";
+            card.innerHTML = `
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="#6c5ce7">
+                    <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+                </svg>
+                <p class="ipa-symbol">${item.sym}</p>
+            `;
+            card.onclick = () => new Audio(`${item.id}.mp3`).play();
+            grid.appendChild(card);
+        });
+    }
+</script>
+</body>
+</html>
